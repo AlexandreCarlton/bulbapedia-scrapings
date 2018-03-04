@@ -147,7 +147,7 @@ Castform was featured as one of the Pokémon released from a Poké Ball in the d
 
 ==Game data==
 ===Pokédex entries===
-====Normal Castform====
+====Normal====
 {{Dex/Header|type=Normal}}
 {{Dex/NA|gen=III}}
 {{Dex/Gen|gen=III}}
