@@ -14,25 +14,28 @@ image_path = Path('images')
 factory = PokemonFactory(wikimedia_path / 'pokemon')
 pokemon_list = PokemonListByNationalPokedexNumber(wikimedia_path)
 pokemon_abilities = PokemonListByAbility(wikimedia_path)
-image_downloader = ImageDownloader(image_path)
+official_artwork_downloader = ImageDownloader(image_path / 'official_artwork')
+menu_sprite_downloader = ImageDownloader(image_path / 'menu_sprites')
 
 
-for pokemon_name in list(pokemon_list)[717:]:
+for pokemon_name in pokemon_list:
     # Downloads the wiki file if not present.
-    logging.info("Downloading %s...", pokemon_name)
+    logging.info("Loading page for %s...", pokemon_name)
     pokemon_wiki_page = factory.make_pokemon_wiki_page(pokemon_name)
 
     # Grab official artwork
     for image_filename in pokemon_wiki_page.images.values():
+        image_path = official_artwork_downloader.directory / image_filename
         logging.info("Checking image filename %s", image_filename)
-        if not (image_path / image_filename).exists():
+        if not image_path.exists():
             logging.info("Attemting to download filename %s", image_filename)
-            image_downloader.download_image(image_filename)
+            official_artwork_downloader.download_image(image_filename)
 
 # Download menu sprites
 for ability in pokemon_abilities:
     menu_sprite_filename = ability.menu_sprite + 'MS.png'
+    menu_sprite_path = menu_sprite_downloader.directory / menu_sprite_filename
     logging.info("Checking menu sprite filename %s", menu_sprite_filename)
-    if not (image_path / menu_sprite_filename).exists():
+    if not menu_sprite_path.exists():
         logging.info("Attempting to download filename %s", menu_sprite_filename)
-        image_downloader.download_image(menu_sprite_filename)
+        menu_sprite_downloader.download_image(menu_sprite_filename)
